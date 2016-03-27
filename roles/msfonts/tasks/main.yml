@@ -1,0 +1,13 @@
+---
+
+- name: auto accepted Microsoft EULA
+  debconf: name='ttf-mscorefonts-installer' question='msttcorefonts/accepted-mscorefonts-eula' vtype='select' value='true'
+  sudo: yes
+
+- name: auto present Microsoft EULA
+  debconf: name='ttf-mscorefonts-installer' question='msttcorefonts/present-mscorefonts-eula' vtype='note' value=''
+  sudo: yes
+
+- name: install ms core fonts
+  apt: name=ttf-mscorefonts-installer state=present
+  sudo: yes

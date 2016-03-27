@@ -3,3 +3,9 @@
 - hosts: all
   roles:
     - common
+    - ansible
+    - git
+    - zsh
+    - vim
+    - msfonts
+    - pgsql

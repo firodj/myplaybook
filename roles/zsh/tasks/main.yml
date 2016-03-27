@@ -1,0 +1,17 @@
+---
+
+- name: install basic tools
+  apt: name={{ item }} state=present
+  with_items:
+    - zsh
+  sudo: yes
+
+- name: oh-my-zsh | Clone down repository
+  git: repo=https://github.com/robbyrussell/oh-my-zsh.git dest=~/.oh-my-zsh update=no
+
+- name: oh-my-zsh | Deploy new .zshrc
+  template: src=files/zshrc.in dest=~/.zshrc
+
+- name: oh-my-zsh | Set zsh as default shell
+  user: name={{ ansible_user_id }} shell=/bin/zsh
+  sudo: yes

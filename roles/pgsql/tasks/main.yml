@@ -1,0 +1,17 @@
+---
+
+- name: add postgresql repo
+  apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' state=present filename='trusty-pgdg'
+  sudo: yes
+
+- name: add postgresql key
+  apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
+  sudo: yes
+
+- name: install postgresql-9.5 client
+  apt: name=postgresql-client-9.5 state=latest update_cache=yes
+  sudo: yes
+
+- name: install pgbouncer
+  apt: name=pgbouncer state=latest
+  sudo: yes

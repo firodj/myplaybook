@@ -1,0 +1,19 @@
+---
+
+- name: install vim
+  apt: name={{ item }} state=present
+  with_items:
+    - vim-gnome
+    - vim
+  sudo: yes
+
+- name: Download spf13 vim install script
+  get_url: url=http://j.mp/spf13-vim3 dest={{ spf13_output_file_name }}
+
+- name: Check sfp13 if exists
+  stat: path=~/.spf13-vim-3/.git
+  register: spf13vim_git
+
+- name: launch spf13 install script
+  command: sh {{ spf13_output_file_name }}
+  when: spf13vim_git.stat.exists == False

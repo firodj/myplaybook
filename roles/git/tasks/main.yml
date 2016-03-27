@@ -1,0 +1,10 @@
+---
+
+- name: install basic tools
+  apt: name={{ item }} state=present
+  with_items: 
+    - git
+  sudo: yes
+
+- name: install git aliases
+  template: src=files/gitconfig.in dest=~/.gitconfig
