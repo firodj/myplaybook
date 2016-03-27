@@ -10,7 +10,13 @@
 - name: add ansible to repository
   apt_repository: repo='ppa:ansible/ansible'
   sudo: yes
+  register: repo
+
+- name: apt update
+  apt: update_cache=yes
+  sudo: yes
+  when: repo.changed
 
 - name: reinstall ansible
-  apt: name=ansible state=latest update_cache=yes
+  apt: name=ansible state=latest
   sudo: yes

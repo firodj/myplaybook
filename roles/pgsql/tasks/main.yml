@@ -1,17 +1,49 @@
 ---
 
-- name: add postgresql repo
-  apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' state=present filename='trusty-pgdg'
-  sudo: yes
-
 - name: add postgresql key
   apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
   sudo: yes
 
+- name: add postgresql repo
+  apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' state=present
+  sudo: yes
+  register: repo
+
+- name: apt update
+  apt: update_cache=yes
+  sudo: yes
+  when: repo.changed
+
 - name: install postgresql-9.5 client
-  apt: name=postgresql-client-9.5 state=latest update_cache=yes
+  apt: name=postgresql-client-9.5 state=latest
   sudo: yes
 
 - name: install pgbouncer
   apt: name=pgbouncer state=latest
   sudo: yes
+
+- name: add vboxhost
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '^[0-9\.]+\s+vboxhost'
+    line: '10.0.2.2	vboxhost' 
+  sudo: yes
+
+- name: confiugre pgbouncer userlist
+  lineinfile: 
+    dest: /etc/pgbouncer/userlist.txt
+    regexp: '^"postgres"'
+    line: '"postgres" ""' 
+  sudo: yes
+
+- name: confiugre pgbouncer to connet to vm host
+  ini_file:
+    dest: /etc/pgbouncer/pgbouncer.ini
+    section: databases
+    option: '*'
+    value: 'host=vboxhost port=5432 user=postgres'
+    backup: yes
+  sudo: yes
+
+- name: enable pgbouncer
+  service: name=pgbouncer enabled=yes state=started
