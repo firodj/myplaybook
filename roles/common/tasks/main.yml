@@ -1,0 +1,17 @@
+---
+
+- name: install basic tools
+  apt: name={{ item }} state=present
+  with_items:
+    - curl
+    - git
+    - htop
+
+- name: install vim
+  apt: name=vim-gnome state=present
+  tags: vim
+
+- name: install vim spf13
+  shell: 'sh <(curl https://j.mp/spf13-vim3 -L)'
+  tags: vim
+
