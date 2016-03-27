@@ -1,13 +1,18 @@
 [alias]
-    l = log --graph --decorate --pretty=oneline --abbrev-commit
-    lr = log --reverse --decorate --pretty=oneline --abbrev-commit
-    h = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset' --date=relative
-    b = branch -avv
-    s = status -sb --untracked-files=all
-    d = diff --abbrev --minimal --word-diff=color -w -M
-    ds = diff --stat
-    t = cat-file -t
-    p = cat-file -p
-    g = grep --break --heading -n
-    u = log --stat @{u}..HEAD
-    co = checkout
+	l = log --graph --decorate --pretty=oneline --abbrev-commit
+	lr = log --reverse --decorate --pretty=oneline --abbrev-commit
+	h = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset' --date=relative
+	b = branch -avv
+	s = status -sb --untracked-files=all
+	d = diff --abbrev --minimal --word-diff=color -w -M
+	ds = diff --stat
+	t = cat-file -t
+	p = cat-file -p
+	g = grep --break --heading -n
+	u = log --stat @{u}..HEAD
+	co = checkout
+[push]
+	default = simple
+[user]
+	name = {{ ansible_user_id }}
+	email = {{ ansible_user_id }}@gmail.com

@@ -10,15 +10,15 @@
     - zsh
   sudo: yes
 
-- name: install git aliases
-  template: src=files/gitconfig.in dest=~/.gitconfig
-	
 - name: install vim
   apt: name={{ item }} state=present
   with_items:
     - vim-gnome
     - vim
   sudo: yes
+
+- name: install git aliases
+  template: src=files/gitconfig.in dest=~/.gitconfig
 
 - name: oh-my-zsh | Clone down repository
   git: repo=https://github.com/robbyrussell/oh-my-zsh.git dest=~/.oh-my-zsh update=no
@@ -30,21 +30,23 @@
   user: name={{ ansible_user_id }} shell=/bin/zsh
   sudo: yes
 
-- stat: path=~/.oh-my-zsh/.git
-  register: ohmyzsh_git_rules
-
 - name: Download spf13 vim install script
   get_url: url=http://j.mp/spf13-vim3 dest={{ spf13_output_file_name }}
 
+- name: Check sfp13 if exists
+  stat: path=~/.spf13-vim-3/.git
+  register: spf13vim_git
+
 - name: launch spf13 install script
   command: sh {{ spf13_output_file_name }}
+  when: spf13vim_git.stat.exists == False
 
 - name: auto accepted Microsoft EULA
   debconf: name='ttf-mscorefonts-installer' question='msttcorefonts/accepted-mscorefonts-eula' vtype='select' value='true'
   sudo: yes
 
 - name: auto present Microsoft EULA
-  debconf: name='ttf-mscorefonts-installer' question='msttcorefonts/present-mscorefonts-eula' vtype='note'
+  debconf: name='ttf-mscorefonts-installer' question='msttcorefonts/present-mscorefonts-eula' vtype='note' value=''
   sudo: yes
 
 - name: install ms core fonts
