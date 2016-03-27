@@ -6,4 +6,5 @@
     - build-essential
     - curl
     - htop
+    - silversearcher-ag
   sudo: yes
