@@ -1,17 +1,5 @@
 ---
 
 - hosts: all
-  sudo: yes
-  tasks:
-    - name: install pycurl
-      apt: name=python-pycurl state=present
-
-    - name: install software-properties-common
-      apt: name=software-properties-common state=present
-
-    - name: add ansible to repository
-      apt_repository: repo='ppa:ansible/ansible'
-
-    - name: reinstall ansible
-      apt: name=ansible state=latest update_cache=yes
-
+  roles:
+    - ansible

@@ -1,0 +1,16 @@
+---
+
+- name: install dependency package for upgrade ansible
+  apt: name={{ item }} state=present
+  with_items:
+    - python-pycurl
+    - software-properties-common
+  sudo: yes
+
+- name: add ansible to repository
+  apt_repository: repo='ppa:ansible/ansible'
+  sudo: yes
+
+- name: reinstall ansible
+  apt: name=ansible state=latest update_cache=yes
+  sudo: yes
